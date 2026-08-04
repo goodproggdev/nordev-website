@@ -1,8 +1,6 @@
-"use client";
 import React from "react";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
- 
+
 export const BackgroundBeams = React.memo(
   ({ className }: { className?: string }) => {
     const paths = [
@@ -80,44 +78,76 @@ export const BackgroundBeams = React.memo(
           ></path>
  
           {paths.map((path, index) => (
-            <motion.path
+            <path
               key={`path-` + index}
               d={path}
               stroke={`url(#linearGradient-${index})`}
               strokeOpacity="0.4"
               strokeWidth="0.5"
-            ></motion.path>
+            ></path>
           ))}
           <defs>
-            {paths.map((path, index) => (
-              <motion.linearGradient
-                id={`linearGradient-${index}`}
-                key={`gradient-${index}`}
-                initial={{
-                  x1: "0%",
-                  x2: "0%",
-                  y1: "0%",
-                  y2: "0%",
-                }}
-                animate={{
-                  x1: ["0%", "100%"],
-                  x2: ["0%", "95%"],
-                  y1: ["0%", "100%"],
-                  y2: ["0%", `${93 + Math.random() * 8}%`],
-                }}
-                transition={{
-                  duration: Math.random() * 10 + 10,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  delay: Math.random() * 10,
-                }}
-              >
-                <stop stopColor="#18CCFC" stopOpacity="0"></stop>
-                <stop stopColor="#18CCFC"></stop>
-                <stop offset="32.5%" stopColor="#6344F5"></stop>
-                <stop offset="100%" stopColor="#AE48FF" stopOpacity="0"></stop>
-              </motion.linearGradient>
-            ))}
+            {paths.map((path, index) => {
+              // Stessa animazione di prima (framer-motion, ciclo infinito guidato da JS)
+              // ma implementata con SMIL nativo: identica resa visiva, zero costo sul
+              // thread principale perché è il motore SVG del browser a gestirla.
+              const duration = Math.random() * 10 + 10
+              const delay = Math.random() * 10
+              const y2Target = `${93 + Math.random() * 8}%`
+              const easing = "0.42 0 0.58 1" // equivalente a ease-in-out
+
+              return (
+                <linearGradient
+                  id={`linearGradient-${index}`}
+                  key={`gradient-${index}`}
+                >
+                  <animate
+                    attributeName="x1"
+                    values="0%;100%"
+                    keyTimes="0;1"
+                    calcMode="spline"
+                    keySplines={easing}
+                    dur={`${duration}s`}
+                    begin={`${delay}s`}
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="x2"
+                    values="0%;95%"
+                    keyTimes="0;1"
+                    calcMode="spline"
+                    keySplines={easing}
+                    dur={`${duration}s`}
+                    begin={`${delay}s`}
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="y1"
+                    values="0%;100%"
+                    keyTimes="0;1"
+                    calcMode="spline"
+                    keySplines={easing}
+                    dur={`${duration}s`}
+                    begin={`${delay}s`}
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="y2"
+                    values={`0%;${y2Target}`}
+                    keyTimes="0;1"
+                    calcMode="spline"
+                    keySplines={easing}
+                    dur={`${duration}s`}
+                    begin={`${delay}s`}
+                    repeatCount="indefinite"
+                  />
+                  <stop stopColor="#18CCFC" stopOpacity="0"></stop>
+                  <stop stopColor="#18CCFC"></stop>
+                  <stop offset="32.5%" stopColor="#6344F5"></stop>
+                  <stop offset="100%" stopColor="#AE48FF" stopOpacity="0"></stop>
+                </linearGradient>
+              )
+            })}
  
             <radialGradient
               id="paint0_radial_242_278"

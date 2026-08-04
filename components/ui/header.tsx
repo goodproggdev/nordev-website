@@ -10,7 +10,6 @@ export default function Header() {
     const pathname = usePathname()
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [hidden, setHidden] = useState(false)
-    const [lastScroll, setLastScroll] = useState(0)
     const menuRef = useRef<HTMLDivElement>(null)
 
     // Definiamo se siamo sulla pagina /sanita (o su un percorso che inizia con /sanita)
@@ -32,21 +31,32 @@ export default function Header() {
 
 
     useEffect(() => {
-        const handleScroll = () => {
+        // Throttlato con requestAnimationFrame + listener passivo: stesso
+        // comportamento di prima (nasconde l'header scrollando giù da mobile),
+        // ma senza forzare un aggiornamento di stato ad ogni singolo evento di
+        // scroll (che su mobile può scattare decine di volte al secondo).
+        let lastScrollY = window.scrollY
+        let ticking = false
+
+        const updateHeader = () => {
+            ticking = false
+
             if (window.innerWidth >= 640) return
 
             const currentScroll = window.scrollY
-            if (currentScroll > lastScroll && currentScroll > 50) {
-                setHidden(true)
-            } else {
-                setHidden(false)
-            }
-            setLastScroll(currentScroll)
+            setHidden(currentScroll > lastScrollY && currentScroll > 50)
+            lastScrollY = currentScroll
         }
 
-        window.addEventListener("scroll", handleScroll)
+        const handleScroll = () => {
+            if (ticking) return
+            ticking = true
+            window.requestAnimationFrame(updateHeader)
+        }
+
+        window.addEventListener("scroll", handleScroll, { passive: true })
         return () => window.removeEventListener("scroll", handleScroll)
-    }, [lastScroll])
+    }, [])
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
