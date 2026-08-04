@@ -7,6 +7,7 @@
 @plugin "@tailwindcss/forms" {
   strategy: base;
 }
+@plugin "@tailwindcss/typography";
 
 @theme {
   --font-inter: Inter, sans-serif;

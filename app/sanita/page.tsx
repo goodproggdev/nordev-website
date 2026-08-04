@@ -1,8 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import { CheckCircle, Zap, Shield, Phone, Mail } from "lucide-react";
-import Image from "next/image"; 
+import type { Metadata } from "next";
+import { CheckCircle, Zap, Shield } from "lucide-react";
 
 // --- Importazione dei Componenti del Sito Principale (ASSUNZIONE) ---
 // Devi assicurarti che questi percorsi e nomi siano corretti per il tuo progetto
@@ -10,6 +7,15 @@ import Hero from "@/components/hero-home"; // Componente Hero del sito principal
 import ContactSection from "@/components/contact-section"; // Componente Contatti del sito principale
 import SanitaShowcase from "@/components/sanita-showcase";
 // -------------------------------------------------------------------
+
+// Pagina Server Component: non usa hook client-side, quindi non serve "use
+// client" (rimosso: permette di esportare metadata dedicati per questa
+// pagina, che prima ricadevano sui default generici del sito).
+export const metadata: Metadata = {
+	title: "Soluzioni Web per Professionisti Sanitari - Nordevit",
+	description: "Siti web professionali, veloci e attenti al GDPR per studi medici e professionisti del settore sanitario.",
+	alternates: { canonical: "/sanita" },
+};
 
 
 // --- Contenuti Specifici della Pagina Sanità (Li manteniamo) ---

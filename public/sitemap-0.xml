@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://www.nordevit.it/dashboard/gestionale</loc><lastmod>2026-05-19T21:50:38.479Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.nordevit.it/dashboard</loc><lastmod>2026-05-19T21:50:38.480Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.nordevit.it/dashboard/web-analytics</loc><lastmod>2026-05-19T21:50:38.480Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.nordevit.it/sanita</loc><lastmod>2026-05-19T21:50:38.480Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.nordevit.it</loc><lastmod>2026-05-19T21:50:38.480Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.nordevit.it/privacy-policy</loc><lastmod>2026-05-19T21:50:38.480Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.nordevit.it/demo</loc><lastmod>2026-05-19T21:50:38.480Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/privacy-policy</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/analisi-dati-web</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/design-logo</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/e-commerce-con-shopify</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/evoluzione-sito-esistente</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/seo-e-performance</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/siti-web-su-misura</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/social-professionale</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/sviluppo-app-mobili</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/servizi/visibilita-su-google-maps</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.nordevit.it/sanita</loc><lastmod>2026-08-04T13:07:23.066Z</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>

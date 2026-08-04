@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2 } from "lucide-react"
-import { services, getServiceBySlug, genericHighlights } from "@/lib/services"
+import { services, getServiceBySlug } from "@/lib/services"
 import { BackgroundBeams } from "@/components/ui/background-beams"
 import { ServicePreviewMock } from "@/components/service-preview-mock"
 
@@ -14,12 +14,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 	const service = getServiceBySlug(slug)
 
 	if (!service) {
-		return { title: "Servizio non trovato - Nordevit" }
+		return { title: "Servizio non trovato - Nordevit", robots: { index: false, follow: false } }
 	}
 
 	return {
 		title: `${service.title} - Anteprima servizio - Nordevit`,
 		description: service.desc,
+		alternates: { canonical: `/servizi/${slug}` },
 	}
 }
 
@@ -71,11 +72,12 @@ export default async function ServicePreviewPage({ params }: { params: Promise<{
 					<ServicePreviewMock type={service.previewType} />
 				</div>
 
-				{/* Cosa potrebbe includere */}
+				{/* Cosa potrebbe includere — punti specifici per questo servizio
+				    (prima erano gli stessi 4 punti generici per tutti i 9 servizi) */}
 				<div className="bg-surface/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 mb-14">
 					<h2 className="text-xl font-bold text-frost-white tracking-tight mb-6">Cosa potrebbe includere</h2>
 					<ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						{genericHighlights.map((item) => (
+						{service.highlights.map((item) => (
 							<li key={item} className="flex items-center gap-3 text-sm text-arctic-mist font-light">
 								<CheckCircle2 className="w-4 h-4 text-primary/70 flex-shrink-0" />
 								{item}

@@ -12,21 +12,17 @@ export default function Header() {
     const [hidden, setHidden] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
 
-    // Definiamo se siamo sulla pagina /sanita (o su un percorso che inizia con /sanita)
-    const isSanitaPage = pathname.includes('/sanita')
-    
-    // Definiamo i link che devono puntare alla Home Page (/) con il loro hash
-    const rootLinkHashes = ['#home', '#chi-siamo', '#cosa-facciamo', '#progetti']
+    // Tutti i link del menu puntano a sezioni ancora della Home Page.
+    // Se non siamo già sulla Home ('/'), l'href deve includere il percorso
+    // root ('/#sezione'), altrimenti il browser aggiunge solo l'hash alla
+    // pagina corrente (es. /servizi/xxx#home) senza navigare alla Home.
+    const isHomePage = pathname === '/'
 
-    // Funzione per determinare l'href corretto (modificata)
+    // Funzione per determinare l'href corretto: se siamo su qualsiasi pagina
+    // diversa dalla Home (Sanità, dettaglio servizio, ecc.) antepone '/'
+    // all'hash, così il link naviga sempre alla sezione corretta della Home.
     const getAnchorUrl = (defaultHash: string) => {
-        if (isSanitaPage && rootLinkHashes.includes(defaultHash)) {
-            // Se siamo in /sanita E il link è uno di quelli da reindirizzare:
-            // Restituisce il percorso root ('/') concatenato con l'hash desiderato (es. '/#progetti')
-            return '/' + defaultHash; 
-        }
-        // Altrimenti, usa l'hash predefinito (per #listino, #contatti o altre pagine)
-        return defaultHash;
+        return isHomePage ? defaultHash : '/' + defaultHash;
     }
 
 
@@ -91,8 +87,8 @@ export default function Header() {
                         <li><a href={getAnchorUrl('#chi-siamo')} className="hover:text-frost-white transition-colors duration-300">Chi siamo</a></li>
                         <li><a href={getAnchorUrl('#cosa-facciamo')} className="hover:text-frost-white transition-colors duration-300">Offerta</a></li>
                         <li><a href={getAnchorUrl('#progetti')} className="hover:text-frost-white transition-colors duration-300">Progetti</a></li>
-                        <li><a href="#listino" className="hover:text-frost-white transition-colors duration-300">Soluzioni</a></li>
-                        <li><a href="#contatti" className="hover:text-primary transition-colors duration-300 text-frost-white">Contatti</a></li>
+                        <li><a href={getAnchorUrl('#listino')} className="hover:text-frost-white transition-colors duration-300">Soluzioni</a></li>
+                        <li><a href={getAnchorUrl('#contatti')} className="hover:text-primary transition-colors duration-300 text-frost-white">Contatti</a></li>
                     </ul>
 
                     {/* Pulsante hamburger - solo mobile */}
@@ -114,10 +110,10 @@ export default function Header() {
                         <ul className="flex flex-col items-center gap-4 text-sm font-medium text-text-secondary">
                             <li><a href={getAnchorUrl('#home')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Home</a></li>
                             <li><a href={getAnchorUrl('#chi-siamo')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Chi siamo</a></li>
-                            <li><a href={getAnchorUrl('#cosa-facciamo')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Cosa facciamo</a></li>
-                            <li><a href={getAnchorUrl('#progetti')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Alcuni progetti</a></li>
-                            <li><a href="#listino" className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Listino</a></li>
-                            <li><a href="#contatti" className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Contatti</a></li>
+                            <li><a href={getAnchorUrl('#cosa-facciamo')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Offerta</a></li>
+                            <li><a href={getAnchorUrl('#progetti')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Progetti</a></li>
+                            <li><a href={getAnchorUrl('#listino')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Soluzioni</a></li>
+                            <li><a href={getAnchorUrl('#contatti')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Contatti</a></li>
                         </ul>
                     </div>
                 )}

@@ -1,44 +1,21 @@
-"use client";
-import React from "react";
-import { ContainerScroll } from "@/components/ui/container-scroll";
-import Image from "next/image";
-
+// Prima questo componente montava anche l'immagine "preventivatore.png"
+// dentro un ContainerScroll (framer-motion: useScroll + useTransform,
+// ricalcolati ad ogni tick di scroll) subito sotto l'Hero — di fatto il
+// componente più pesante lato rendering della home, caricato su ogni
+// visita. Su richiesta è stata rimossa da qui e spostata come progetto in
+// components/our-projects.tsx; senza l'immagine e il container animato,
+// questo blocco è ora puro testo, non serve più "use client" né
+// next/image/framer-motion, quindi resta un Server Component leggero.
 export function HeroScroll() {
   return (
-    <div className="flex flex-col overflow-hidden bg-background-dark pt-20">
-      <div className="max-w-7xl mx-auto px-4 mb-4 text-center">
-        <h1 className="text-4xl md:text-6xl font-extralight text-frost-white tracking-tighter leading-tight">
+    <div className="flex flex-col overflow-hidden bg-background-dark pt-20 pb-12">
+      <div className="max-w-7xl mx-auto px-4 text-center">
+        <h2 className="text-4xl md:text-6xl font-extralight text-frost-white tracking-tighter leading-tight">
             Sviluppo di piattaforme <br />
             <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none bg-clip-text text-transparent bg-gradient-to-r from-primary to-aurora-cyan">
             Dati & Performance
             </span>
-        </h1>
-      </div>
-      {/* Mobile: solo l'immagine, senza card/container animato */}
-      <div className="md:hidden px-4">
-        <Image
-          src={`/images/preventivatore.png`}
-          alt="Dashboard Preview"
-          height={720}
-          width={1400}
-          className="w-full h-auto rounded-2xl"
-          draggable={false}
-          priority
-        />
-      </div>
-
-      {/* Tablet/Desktop: card animata con effetto scroll */}
-      <div className="hidden md:block">
-        <ContainerScroll titleComponent={<div />}>
-          <Image
-            src={`/images/preventivatore.png`}
-            alt="Dashboard Preview"
-            height={720}
-            width={1400}
-            className="mx-auto rounded-2xl object-contain sm:object-cover h-full w-full"
-            draggable={false}
-          />
-        </ContainerScroll>
+        </h2>
       </div>
     </div>
   );

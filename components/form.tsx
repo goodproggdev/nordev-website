@@ -9,7 +9,10 @@ interface ContactFormProps {
 }
 
 export default function ContactForm({ subject, setSubject }: ContactFormProps) {
-	const [formData, setFormData] = useState({ email: "", subject: "", body: "" })
+	// "website" è un honeypot: campo invisibile che un utente reale non vede né
+	// compila. Se arriva pieno, l'API lo tratta come spam automatico (vedi
+	// app/api/send-email/route.ts).
+	const [formData, setFormData] = useState({ email: "", subject: "", body: "", website: "" })
 	const [errors, setErrors] = useState<{ [key: string]: string }>({})
 	const [success, setSuccess] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
@@ -57,7 +60,7 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
 			if (!res.ok) throw new Error(await res.text())
 			await res.json()
 			setSuccess(true)
-			setFormData({ email: "", subject, body: "" })
+			setFormData({ email: "", subject, body: "", website: "" })
 		} catch (error: any) {
 			setErrors({ form: error.message || "Invio fallito. Riprova più tardi." })
 		} finally {
@@ -102,6 +105,22 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
                             </div>
 
 							<form noValidate onSubmit={handleSubmit} className="space-y-6">
+								{/* Honeypot anti-spam: invisibile e non raggiungibile da tastiera per un
+								    utente reale. Un bot che compila tutti i campi automaticamente lo
+								    riempie, un visitatore umano non lo vede mai. */}
+								<div className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+									<label htmlFor="website">Non compilare questo campo</label>
+									<input
+										type="text"
+										id="website"
+										name="website"
+										tabIndex={-1}
+										autoComplete="off"
+										value={formData.website}
+										onChange={handleChange}
+									/>
+								</div>
+
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-bold text-text-secondary mb-2 ml-1">Email</label>

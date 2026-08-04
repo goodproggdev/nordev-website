@@ -1,6 +1,9 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /demo
 
 # Host
 Host: https://www.nordevit.it

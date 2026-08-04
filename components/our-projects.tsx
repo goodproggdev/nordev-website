@@ -9,6 +9,7 @@ import IBMLogo from "@/public/images/IBM.jpg"
 import AccentureLogo from "@/public/images/Accenture.jpg"
 import ABSLogo from "@/public/images/ABS.jpg"
 import OrologiaioLogo from "@/public/images/Orologiaio.jpg"
+import PreventivatoreScreenshot from "@/public/images/preventivatore.png"
 
 import { BackgroundBeams } from "@/components/ui/background-beams";
 
@@ -108,6 +109,19 @@ export default function Cta() {
             },
             href: "https://orologiaiodasebastian.com/",
             type: "link"
+        },
+        {
+            front: {
+                src: PreventivatoreScreenshot,
+                alt: "Preventivatore Nordev",
+                title: "Preventivatore Smart",
+                description: "Prodotto interno Nordev"
+            },
+            back: {
+                title: "Preventivatore Smart",
+                description: "Tool web che guida il visitatore in pochi passaggi verso una stima di massima del proprio progetto, qualificando il contatto prima ancora del primo appuntamento commerciale."
+            },
+            type: "card"
         }
     ];
 

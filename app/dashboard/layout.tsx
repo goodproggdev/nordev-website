@@ -1,7 +1,17 @@
 // File: app/dashboard/layout.tsx (o dove si trova il tuo layout principale)
 
 // Importa il wrapper che contiene la logica del menu (DashboardLayout.tsx)
-import DashboardLayout from '@/components/dashboard/DashboardLayout'; 
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import type { Metadata } from "next";
+
+// Questo pannello è una demo statica senza autenticazione: non deve essere
+// indicizzato da Google (è anche escluso dalla sitemap, vedi
+// next-sitemap.config.js). Resta comunque raggiungibile da chi conosce
+// l'URL: se deve restare online, valutare una vera protezione con login.
+export const metadata: Metadata = {
+  title: "Dashboard (demo interna) - Nordevit",
+  robots: { index: false, follow: false },
+};
 
 export default function DashboardRootLayout({
   children,

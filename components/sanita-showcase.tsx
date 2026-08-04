@@ -43,18 +43,18 @@ const DemoCard: React.FC<DemoCardProps> = ({ title, description, link, icon: Ico
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 border-t-4 border-blue-600"
+        className="block bg-surface/40 backdrop-blur-xl p-6 rounded-3xl border border-white/10 transition-all duration-300 hover:border-primary/30 hover:-translate-y-1"
     >
         <div className="flex items-start mb-4">
-            <Icon className="w-8 h-8 text-blue-600 flex-shrink-0 mr-4" />
+            <Icon className="w-8 h-8 text-primary flex-shrink-0 mr-4" />
             <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-1">{title}</h3>
-                <span className="text-xs text-blue-500 uppercase font-semibold">Vedi Layout Demo</span>
+                <h3 className="text-xl font-bold text-frost-white mb-1">{title}</h3>
+                <span className="text-xs text-primary/80 uppercase font-semibold">Vedi Layout Demo</span>
             </div>
         </div>
-        <p className="text-gray-600 text-sm mb-4">{description}</p>
-        
-        <span className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition duration-150">
+        <p className="text-arctic-mist text-sm mb-4">{description}</p>
+
+        <span className="inline-flex items-center text-sm font-medium text-primary hover:text-aurora-cyan transition duration-150">
             Esplora il Layout <ExternalLink className="w-4 h-4 ml-1" />
         </span>
     </a>
@@ -64,15 +64,15 @@ const DemoCard: React.FC<DemoCardProps> = ({ title, description, link, icon: Ico
 // --- 3. Componente Principale SanitaShowcase (Nessuna modifica necessaria qui) ---
 const SanitaShowcase: React.FC = () => {
     return (
-        <section className="relative py-12 md:py-20 bg-gray-50">
+        <section className="relative py-12 md:py-20 bg-background-dark">
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                
+
                 {/* Intestazione */}
                 <div className="text-center pb-12 md:pb-16">
-                    <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-gray-900">
+                    <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-frost-white">
                         Seleziona la tua Piattaforma Demo
                     </h2>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    <p className="text-xl text-arctic-mist max-w-3xl mx-auto">
                         Questi sono i nostri <b>4 layout base</b>, completamente personalizzabili sul tuo brand e sulla tua specializzazione in sanità.
                     </p>
                 </div>

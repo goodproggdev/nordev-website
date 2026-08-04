@@ -1,6 +1,26 @@
-export const metadata = {
-  title: "Nordev | Sviluppo Siti Web e App a Treviso",
-  description: "Nordev realizza siti web, e-commerce, web app e mobile app su misura. Siamo un team di sviluppatori di Treviso specializzati in soluzioni digitali professionali.",
+import type { Metadata } from "next";
+
+const title = "Nordev | Sviluppo Siti Web e App a Treviso";
+const description =
+  "Nordev realizza siti web, e-commerce, web app e mobile app su misura. Siamo un team di sviluppatori di Treviso specializzati in soluzioni digitali professionali.";
+
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: {
+    canonical: "/",
+  },
+  // Senza questo override l'anteprima social della home mostrava titolo e
+  // descrizione generici presi dal default di app/layout.tsx.
+  openGraph: {
+    title,
+    description,
+    url: "/",
+  },
+  twitter: {
+    title,
+    description,
+  },
 };
 
 import Hero from "@/components/hero-home";
