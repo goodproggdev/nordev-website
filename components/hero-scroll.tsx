@@ -14,16 +14,32 @@ export function HeroScroll() {
             </span>
         </h1>
       </div>
-      <ContainerScroll titleComponent={<div />}>
+      {/* Mobile: solo l'immagine, senza card/container animato */}
+      <div className="md:hidden px-4">
         <Image
           src={`/images/preventivatore.png`}
           alt="Dashboard Preview"
           height={720}
           width={1400}
-          className="mx-auto rounded-2xl object-contain sm:object-cover h-full w-full"
+          className="w-full h-auto rounded-2xl"
           draggable={false}
+          priority
         />
-      </ContainerScroll>
+      </div>
+
+      {/* Tablet/Desktop: card animata con effetto scroll */}
+      <div className="hidden md:block">
+        <ContainerScroll titleComponent={<div />}>
+          <Image
+            src={`/images/preventivatore.png`}
+            alt="Dashboard Preview"
+            height={720}
+            width={1400}
+            className="mx-auto rounded-2xl object-contain sm:object-cover h-full w-full"
+            draggable={false}
+          />
+        </ContainerScroll>
+      </div>
     </div>
   );
 }

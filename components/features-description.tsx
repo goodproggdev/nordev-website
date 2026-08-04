@@ -1,10 +1,12 @@
 "use client"
-import { useState, useRef, useEffect, useMemo } from "react"
+import { useRef, useMemo } from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { services, Service } from "@/lib/services"
+import { motion, useMotionValue, useSpring } from "framer-motion"
 import { Monitor, LayoutDashboard, ArrowRight } from "lucide-react"
 
-const BentoCard = ({ f, idx, span, onClick }: { f: any, idx: number, span: string, onClick?: () => void }) => {
+const BentoCard = ({ service, span, onClick }: { service: Service, span: string, onClick?: () => void }) => {
 	const x = useMotionValue(0);
 	const y = useMotionValue(0);
 
@@ -40,29 +42,29 @@ const BentoCard = ({ f, idx, span, onClick }: { f: any, idx: number, span: strin
 				span
 			)}
 		>
-			<motion.div 
+			<motion.div
 				className="absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0 pointer-events-none"
 				style={{
 					background: useMemo(() => `radial-gradient(300px circle at ${mouseX.get() * 100 + 50}% ${mouseY.get() * 100 + 50}%, rgba(125, 211, 252, 0.08), transparent 80%)`, [mouseX, mouseY])
 				}}
 			/>
-			
+
 			<div className="relative z-10 flex flex-col h-full pointer-events-none" style={{ transform: "translateZ(40px)" }}>
 				<div className="flex items-center gap-3 mb-3">
 					<span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-lg transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/10 group-hover:border-primary/20">
-						{f.title.split(' ')[0]}
+						{service.emoji}
 					</span>
 					<h3 className="text-sm font-bold text-frost-white tracking-tight">
-						{f.title.split(' ').slice(1).join(' ')}
+						{service.title}
 					</h3>
 				</div>
-				
+
 				<p className="text-xs leading-relaxed text-arctic-mist font-light group-hover:text-frost-white transition-colors duration-500">
-					{f.desc}
+					{service.desc}
 				</p>
 
 				<div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-primary/70 group-hover:text-primary transition-colors duration-500">
-					Richiedi info
+					Vedi anteprima
 					<ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
 				</div>
 			</div>
@@ -72,44 +74,30 @@ const BentoCard = ({ f, idx, span, onClick }: { f: any, idx: number, span: strin
 	);
 }
 
-export default function FeaturesDescription({ onSelectService }: { onSelectService?: (title: string) => void }) {
+export default function FeaturesDescription() {
 	const buttonRef = useRef<HTMLAnchorElement>(null)
+	const router = useRouter()
 
-	const handleCardClick = (title: string) => {
-		// Rimuove l'emoji iniziale, es. "🚀 Siti Web su Misura" -> "Siti Web su Misura"
-		const cleanTitle = title.split(' ').slice(1).join(' ')
-		onSelectService?.(cleanTitle)
-		document.getElementById("listino")?.scrollIntoView({ behavior: "smooth" })
+	const handleCardClick = (slug: string) => {
+		router.push(`/servizi/${slug}`)
 	}
 
-	const features = [
-		{ title: "🚀 Siti Web su Misura", desc: "Dimentica i CMS lenti. Creiamo siti web unici, veloci e sicuri, scritti su misura per te." },
-		{ title: "🔧 Evoluzione Sito Esistente", desc: "Il tuo sito ha bisogno di una spinta? Aggiungiamo nuove pagine, form e integrazioni per farlo crescere con te." },
-		{ title: "🛒 E-commerce con Shopify", desc: "Vendi online in modo semplice e professionale. Creiamo il tuo negozio su Shopify, personalizzato per distinguerti." },
-		{ title: "📍 Visibilità su Google Maps", desc: "Fatti trovare dai clienti vicino a te. Ottimizziamo il tuo profilo Google per essere la prima scelta a livello locale." },
-		{ title: "❤️ Social Professionale", desc: "Creiamo le tue pagine Facebook e Instagram, pronte per essere gestite da te. La base perfetta per la tua community." },
-		{ title: "📊 Analisi Dati Web", desc: "Scopri chi visita il tuo sito e cosa cerca. Trasformiamo i dati in decisioni strategiche per la tua crescita." },
-		{ title: "🏆 SEO e Performance", desc: "Sali nelle ricerche di Google con un sito ultra-veloce. Attiriamo i clienti giusti, pronti a sceglierti." },
-		{ title: "🎨 Design & Logo", desc: "Diamo un'identità visiva unica al tuo brand. Dal logo al materiale pubblicitario, curiamo la tua immagine." },
-		{ title: "📱 Sviluppo App Mobili", desc: "Porta il tuo business nelle tasche dei tuoi clienti. Sviluppiamo app per iOS e Android integrate con il tuo sito web." }
-	]
-
 	const spans = [
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
-		"lg:col-span-4 lg:row-span-1", 
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
+		"md:col-span-3 lg:col-span-4 lg:row-span-1",
 	];
 
 	return (
 		<section id="cosa-facciamo" className="relative py-24 px-6 overflow-hidden bg-background-dark">
          <div className="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-         
+
          <div className="mx-auto max-w-7xl relative z-10">
             <div className="mb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -163,10 +151,10 @@ export default function FeaturesDescription({ onSelectService }: { onSelectServi
 				<h2 className="mb-12 text-center text-4xl md:text-5xl font-extralight tracking-tighter text-frost-white leading-tight">
 					La nostra <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-aurora-cyan font-normal">offerta</span> completa
 				</h2>
-				
-				<div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-3 auto-rows-[120px]">
-					{features.map((f, idx) => (
-						<BentoCard key={idx} f={f} idx={idx} span={spans[idx] || "lg:col-span-4"} onClick={() => handleCardClick(f.title)} />
+
+				<div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-3 auto-rows-auto md:auto-rows-[140px] lg:auto-rows-[120px]">
+					{services.map((service, idx) => (
+						<BentoCard key={service.slug} service={service} span={spans[idx] || "lg:col-span-4"} onClick={() => handleCardClick(service.slug)} />
 					))}
 				</div>
 
