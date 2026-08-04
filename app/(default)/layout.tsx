@@ -52,7 +52,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
 				<title>{pageTitle}</title>
         <link rel="icon" type="image/svg+xml" href="/logo_nordev.svg" />
 				<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
-				<link rel="manifest" href="/manifest.json" />
+				<link rel="manifest" href="/site.webmanifest" />
 				<link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 				<meta name="theme-color" content="#020617" />
 				<meta name="author" content="Nordevit" />
@@ -67,14 +67,14 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
 				<meta property="og:title" content={pageTitle} />
 				<meta property="og:description" content={pageDescription} />
 				<meta property="og:url" content={canonical} />
-				<meta property="og:image" content={`${baseUrl}/og-image.png`} />
+				<meta property="og:image" content={`${baseUrl}/images/logo-nordev.png`} />
 				<meta property="og:site_name" content="Nordevit" />
 				<meta property="og:locale" content="it_IT" />
 
 				<meta name="twitter:card" content="summary_large_image" />
 				<meta name="twitter:title" content={pageTitle} />
 				<meta name="twitter:description" content={pageDescription} />
-				<meta name="twitter:image" content={`${baseUrl}/og-image.png`} />
+				<meta name="twitter:image" content={`${baseUrl}/images/logo-nordev.png`} />
 				<meta name="twitter:site" content="@nordevit" />
 
 				<script
@@ -85,7 +85,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
 							"@type": "Organization",
 							"name": "Nordevit",
 							"url": baseUrl,
-							"logo": `${baseUrl}/logo.png`,
+							"logo": `${baseUrl}/images/logo-nordev.png`,
 							"sameAs": [
 								"https://www.facebook.com/nordevit2",
 								"https://www.linkedin.com/company/nordevit",

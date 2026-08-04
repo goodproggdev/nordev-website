@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Logo from "./logo"
 import { usePathname } from "next/navigation"
+import { Menu, X } from "lucide-react"
 
 export default function Header() {
     const pathname = usePathname()
@@ -68,9 +69,9 @@ export default function Header() {
             ${hidden ? "-translate-y-full" : "translate-y-0"}
             top-0 md:top-8`}>
             <div className="mx-auto max-w-6xl sm:max-w-2xl px-4 sm:px-6">
-                <div className="relative flex h-14 items-center justify-between gap-3 rounded-full bg-white/[0.02] px-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] backdrop-blur-2xl border border-white/10" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                <div className="relative flex h-14 items-center justify-between gap-3 rounded-full bg-white/[0.02] px-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] backdrop-blur-2xl border border-white/10">
 
-                    <div className="sm:hidden flex items-center cursor-pointer">
+                    <div className="sm:hidden flex items-center">
                         <Logo />
                     </div>
 
@@ -83,11 +84,23 @@ export default function Header() {
                         <li><a href="#listino" className="hover:text-frost-white transition-colors duration-300">Soluzioni</a></li>
                         <li><a href="#contatti" className="hover:text-primary transition-colors duration-300 text-frost-white">Contatti</a></li>
                     </ul>
+
+                    {/* Pulsante hamburger - solo mobile */}
+                    <button
+                        type="button"
+                        className="sm:hidden flex items-center justify-center w-9 h-9 -mr-2 rounded-full text-frost-white hover:bg-white/10 transition-colors"
+                        onClick={() => setMobileMenuOpen((open) => !open)}
+                        aria-label={mobileMenuOpen ? "Chiudi menu" : "Apri menu"}
+                        aria-expanded={mobileMenuOpen}
+                        aria-controls="mobile-menu"
+                    >
+                        {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    </button>
                 </div>
 
                 {/* Menu mobile */}
                 {mobileMenuOpen && (
-                    <div ref={menuRef} className="sm:hidden mt-2 rounded-xl bg-surface/90 p-4 shadow-xl border border-white/10 backdrop-blur-xl">
+                    <div ref={menuRef} id="mobile-menu" className="sm:hidden mt-2 rounded-xl bg-surface/90 p-4 shadow-xl border border-white/10 backdrop-blur-xl">
                         <ul className="flex flex-col items-center gap-4 text-sm font-medium text-text-secondary">
                             <li><a href={getAnchorUrl('#home')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Home</a></li>
                             <li><a href={getAnchorUrl('#chi-siamo')} className="hover:text-primary" onClick={() => setMobileMenuOpen(false)}>Chi siamo</a></li>
