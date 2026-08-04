@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { Monitor, LayoutDashboard, ArrowRight } from "lucide-react"
 
-const BentoCard = ({ f, idx, span }: { f: any, idx: number, span: string }) => {
+const BentoCard = ({ f, idx, span, onClick }: { f: any, idx: number, span: string, onClick?: () => void }) => {
 	const x = useMotionValue(0);
 	const y = useMotionValue(0);
 
@@ -28,14 +28,15 @@ const BentoCard = ({ f, idx, span }: { f: any, idx: number, span: string }) => {
 	}
 
 	return (
-		<motion.article 
+		<motion.article
 			onMouseMove={handleMouseMove}
 			onMouseLeave={handleMouseLeave}
+			onClick={onClick}
 			style={{
 				transformStyle: "preserve-3d",
 			}}
 			className={cn(
-				"group relative flex flex-col justify-start overflow-hidden bg-white/[0.02] backdrop-blur-3xl border border-white/5 rounded-2xl p-6 transition-colors duration-500 hover:bg-white/[0.04] hover:border-primary/30",
+				"group relative flex flex-col justify-start overflow-hidden bg-white/[0.02] backdrop-blur-3xl border border-white/5 rounded-2xl p-6 transition-colors duration-500 hover:bg-white/[0.04] hover:border-primary/30 cursor-pointer",
 				span
 			)}
 		>
@@ -59,6 +60,11 @@ const BentoCard = ({ f, idx, span }: { f: any, idx: number, span: string }) => {
 				<p className="text-xs leading-relaxed text-arctic-mist font-light group-hover:text-frost-white transition-colors duration-500">
 					{f.desc}
 				</p>
+
+				<div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-primary/70 group-hover:text-primary transition-colors duration-500">
+					Richiedi info
+					<ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+				</div>
 			</div>
 
 			<div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/[0.03] via-transparent to-transparent pointer-events-none" />
@@ -66,8 +72,15 @@ const BentoCard = ({ f, idx, span }: { f: any, idx: number, span: string }) => {
 	);
 }
 
-export default function FeaturesDescription() {
+export default function FeaturesDescription({ onSelectService }: { onSelectService?: (title: string) => void }) {
 	const buttonRef = useRef<HTMLAnchorElement>(null)
+
+	const handleCardClick = (title: string) => {
+		// Rimuove l'emoji iniziale, es. "🚀 Siti Web su Misura" -> "Siti Web su Misura"
+		const cleanTitle = title.split(' ').slice(1).join(' ')
+		onSelectService?.(cleanTitle)
+		document.getElementById("listino")?.scrollIntoView({ behavior: "smooth" })
+	}
 
 	const features = [
 		{ title: "🚀 Siti Web su Misura", desc: "Dimentica i CMS lenti. Creiamo siti web unici, veloci e sicuri, scritti su misura per te." },
@@ -153,7 +166,7 @@ export default function FeaturesDescription() {
 				
 				<div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-3 auto-rows-[120px]">
 					{features.map((f, idx) => (
-						<BentoCard key={idx} f={f} idx={idx} span={spans[idx] || "lg:col-span-4"} />
+						<BentoCard key={idx} f={f} idx={idx} span={spans[idx] || "lg:col-span-4"} onClick={() => handleCardClick(f.title)} />
 					))}
 				</div>
 

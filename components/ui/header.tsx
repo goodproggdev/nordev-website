@@ -88,7 +88,7 @@ export default function Header() {
                     {/* Pulsante hamburger - solo mobile */}
                     <button
                         type="button"
-                        className="sm:hidden flex items-center justify-center w-9 h-9 -mr-2 rounded-full text-frost-white hover:bg-white/10 transition-colors"
+                        className="sm:hidden flex items-center justify-center w-9 h-9 -mr-2 rounded-full bg-white/5 border border-white/10 text-frost-white hover:bg-white/10 hover:border-primary/30 transition-colors"
                         onClick={() => setMobileMenuOpen((open) => !open)}
                         aria-label={mobileMenuOpen ? "Chiudi menu" : "Apri menu"}
                         aria-expanded={mobileMenuOpen}

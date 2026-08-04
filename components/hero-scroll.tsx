@@ -20,7 +20,7 @@ export function HeroScroll() {
           alt="Dashboard Preview"
           height={720}
           width={1400}
-          className="mx-auto rounded-2xl object-cover h-full w-full"
+          className="mx-auto rounded-2xl object-contain sm:object-cover h-full w-full"
           draggable={false}
         />
       </ContainerScroll>
