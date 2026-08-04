@@ -1,5 +1,6 @@
 # Nordev — Sito Web
 
+
 Sito web di Nordev, sviluppato in **Next.js 15** (App Router) e **Tailwind CSS v4**.
 
 ## Stack
