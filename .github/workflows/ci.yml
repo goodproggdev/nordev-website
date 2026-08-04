@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - name: Build
+        run: npm run build
+        env:
+          SMTP_HOST: smtp.example.com
+          SMTP_PORT: "587"
+          SMTP_USER: ci@example.com
+          SMTP_PASS: dummy
+          CONTACT_RECEIVER: ci@example.com
