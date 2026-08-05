@@ -1,6 +1,7 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
 import Image, { StaticImageData } from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import PircherLogo from "@/public/images/Pircher.jpg"
@@ -23,6 +24,7 @@ interface ProjectCardProps {
     backContent?: {
         title: string;
         description: string;
+        slug?: string;
     };
 }
 
@@ -62,7 +64,16 @@ const ProjectCard = ({ frontContent, backContent }: ProjectCardProps) => {
                     <div className="absolute inset-0 w-full h-full bg-white/[0.08] backdrop-blur-3xl flex flex-col items-center justify-center p-8 rounded-[32px] border border-primary/30 [backface-visibility:hidden] [transform:rotateY(180deg)] shadow-[0_0_50px_rgba(125,211,252,0.15)]">
                         <h6 className="text-2xl font-bold mb-4 text-primary tracking-tight">{backContent.title}</h6>
                         <p className="text-frost-white/90 text-center leading-relaxed text-sm font-light tracking-wide">{backContent.description}</p>
-                        <div className="mt-8 px-6 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
+                        {backContent.slug && (
+                            <Link
+                                href={`/progetti/${backContent.slug}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="mt-6 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest hover:bg-primary/20 transition-colors"
+                            >
+                                Leggi il caso studio <ArrowRight className="w-3 h-3" />
+                            </Link>
+                        )}
+                        <div className="mt-4 px-6 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
                             Clicca per tornare
                         </div>
                     </div>
@@ -83,7 +94,8 @@ export default function Cta() {
             },
             back: {
                 title: "Pircher",
-                description: "Progetto di un nuovo gestionale ERP"
+                description: "Progetto di un nuovo gestionale ERP",
+                slug: "pircher"
             },
             type: "card"
         },
@@ -96,7 +108,8 @@ export default function Cta() {
             },
             back: {
                 title: "ABS Utensili",
-                description: "L’integrazione prevede uno scambio bidirezionale di dati tra Gestionale ERP ed E-Commerce. Il risultato consiste nella gestione in tempo reale di scorte presenti e posizione geografica degli ordini."
+                description: "L’integrazione prevede uno scambio bidirezionale di dati tra Gestionale ERP ed E-Commerce. Il risultato consiste nella gestione in tempo reale di scorte presenti e posizione geografica degli ordini.",
+                slug: "abs-utensili"
             },
             type: "card"
         },
@@ -119,7 +132,8 @@ export default function Cta() {
             },
             back: {
                 title: "Preventivatore Smart",
-                description: "Tool web che guida il visitatore in pochi passaggi verso una stima di massima del proprio progetto, qualificando il contatto prima ancora del primo appuntamento commerciale."
+                description: "Tool web che guida il visitatore in pochi passaggi verso una stima di massima del proprio progetto, qualificando il contatto prima ancora del primo appuntamento commerciale.",
+                slug: "preventivatore-smart"
             },
             type: "card"
         }

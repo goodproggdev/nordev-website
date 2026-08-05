@@ -1,10 +1,11 @@
 "use client"
-import { useRef, useMemo } from "react"
+import { useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { services, Service } from "@/lib/services"
 import { motion, useMotionValue, useSpring } from "framer-motion"
 import { Monitor, LayoutDashboard, ArrowRight } from "lucide-react"
+import LeadMagnetGate from "@/components/lead-magnet-gate"
 
 const BentoCard = ({ service, span, onClick }: { service: Service, span: string, onClick?: () => void }) => {
 	const x = useMotionValue(0);
@@ -75,7 +76,6 @@ const BentoCard = ({ service, span, onClick }: { service: Service, span: string,
 }
 
 export default function FeaturesDescription() {
-	const buttonRef = useRef<HTMLAnchorElement>(null)
 	const router = useRouter()
 
 	const handleCardClick = (slug: string) => {
@@ -159,19 +159,7 @@ export default function FeaturesDescription() {
 				</div>
 
 				<div className="mt-20 flex justify-center">
-					<a
-						ref={buttonRef}
-						href="/docs/guida-nordev.pdf"
-						target="_blank"
-						className="group relative inline-flex items-center justify-center px-8 py-3 text-sm font-medium text-frost-white bg-white/5 border border-white/10 rounded-full backdrop-blur-md transition-all duration-500 hover:bg-white/10 hover:border-primary/30 hover:scale-105 overflow-hidden"
-					>
-                        <span className="mr-3 p-1.5 rounded-full bg-primary/20 text-primary">
-                            <ArrowRight className="w-4 h-4" />
-                        </span>
-						<span className="relative z-10 flex items-center tracking-wide">
-                            Scarica la Guida Nordev (PDF)
-                        </span>
-					</a>
+					<LeadMagnetGate />
 				</div>
 			</div>
 		</div>

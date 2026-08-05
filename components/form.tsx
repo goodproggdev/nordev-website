@@ -1,6 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 import { Phone, MessageCircle, Send, Loader2 } from "lucide-react"
 
 interface ContactFormProps {
@@ -8,63 +11,64 @@ interface ContactFormProps {
 	setSubject: (subject: string) => void
 }
 
+// Zod è la stessa validazione che prima viveva a mano in `validate()`, solo
+// dichiarativa e condivisa tra client (qui, via React Hook Form) ed eventuali
+// usi futuri dello stesso schema. `website` è l'honeypot anti-spam invisibile
+// (vedi app/api/send-email/route.ts): nessun vincolo, un bot lo riempie da solo.
+const contactSchema = z.object({
+	email: z
+		.string()
+		.min(1, "L'email è obbligatoria")
+		.email("L'email non è valida"),
+	subject: z
+		.string()
+		.min(1, "L'oggetto è obbligatorio")
+		.max(200, "Oggetto troppo lungo"),
+	body: z
+		.string()
+		.min(1, "Il messaggio è obbligatorio")
+		.max(5000, "Messaggio troppo lungo"),
+	gdpr: z.literal(true, {
+		errorMap: () => ({ message: "Devi accettare il trattamento dei dati." }),
+	}),
+	website: z.string().optional(),
+})
+
+type ContactFormValues = z.infer<typeof contactSchema>
+
 export default function ContactForm({ subject, setSubject }: ContactFormProps) {
-	// "website" è un honeypot: campo invisibile che un utente reale non vede né
-	// compila. Se arriva pieno, l'API lo tratta come spam automatico (vedi
-	// app/api/send-email/route.ts).
-	const [formData, setFormData] = useState({ email: "", subject: "", body: "", website: "" })
-	const [errors, setErrors] = useState<{ [key: string]: string }>({})
-	const [success, setSuccess] = useState(false)
-	const [isLoading, setIsLoading] = useState(false)
-	const [gdprAccepted, setGdprAccepted] = useState(false)
+	const {
+		register,
+		handleSubmit,
+		reset,
+		setValue,
+		formState: { errors, isSubmitting, isSubmitSuccessful },
+		setError,
+	} = useForm<ContactFormValues>({
+		resolver: zodResolver(contactSchema),
+		mode: "onTouched",
+		defaultValues: { email: "", subject, body: "", website: "", gdpr: false as unknown as true },
+	})
 
+	// Quando l'utente clicca un pacchetto in Pricing, `subject` cambia dal
+	// genitore: lo riflettiamo nel campo del form anche se l'utente non lo ha
+	// ancora toccato.
 	useEffect(() => {
-		setFormData(prev => ({ ...prev, subject }))
-	}, [subject])
+		setValue("subject", subject)
+	}, [subject, setValue])
 
-	const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-
-	const validate = () => {
-		const newErrors: { [key: string]: string } = {}
-		if (!formData.email) newErrors.email = "L'email è obbligatoria"
-		else if (!validateEmail(formData.email)) newErrors.email = "L'email non è valida"
-		if (!formData.subject) newErrors.subject = "L'oggetto è obbligatorio"
-		if (!formData.body) newErrors.body = "Il messaggio è obbligatorio"
-		if (!gdprAccepted) newErrors.gdpr = "Devi accettare il trattamento dei dati."
-		setErrors(newErrors)
-		return Object.keys(newErrors).length === 0
-	}
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		const { name, value } = e.target
-		setFormData(prev => ({ ...prev, [name]: value }))
-		setErrors(prev => ({ ...prev, [name]: "" }))
-		setSuccess(false)
-	}
-
-	const handleGdprChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setGdprAccepted(e.target.checked)
-		setErrors(prev => ({ ...prev, gdpr: "" }))
-	}
-
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-		if (!validate()) return
-		setIsLoading(true)
+	const onSubmit = async (data: ContactFormValues) => {
 		try {
 			const res = await fetch("/api/send-email", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(formData),
+				body: JSON.stringify(data),
 			})
 			if (!res.ok) throw new Error(await res.text())
 			await res.json()
-			setSuccess(true)
-			setFormData({ email: "", subject, body: "", website: "" })
+			reset({ email: "", subject, body: "", website: "", gdpr: false as unknown as true })
 		} catch (error: any) {
-			setErrors({ form: error.message || "Invio fallito. Riprova più tardi." })
-		} finally {
-			setIsLoading(false)
+			setError("root", { message: error.message || "Invio fallito. Riprova più tardi." })
 		}
 	}
 
@@ -72,7 +76,7 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
 		<section id="contatti" className="relative py-24 px-4 overflow-hidden">
             {/* Background Glow */}
             <div className="absolute top-0 right-1/2 translate-x-1/2 w-[600px] h-[300px] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
-            
+
 			<div className="container mx-auto px-4 relative">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary">
@@ -94,7 +98,7 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
 									<MessageCircle className="w-5 h-5" /> WhatsApp
 								</a>
 							</div>
-							
+
 							<div className="relative mb-10">
                                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
                                     <div className="w-full border-t border-white/5"></div>
@@ -104,7 +108,7 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
                                 </div>
                             </div>
 
-							<form noValidate onSubmit={handleSubmit} className="space-y-6">
+							<form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 								{/* Honeypot anti-spam: invisibile e non raggiungibile da tastiera per un
 								    utente reale. Un bot che compila tutti i campi automaticamente lo
 								    riempie, un visitatore umano non lo vede mai. */}
@@ -113,11 +117,9 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
 									<input
 										type="text"
 										id="website"
-										name="website"
 										tabIndex={-1}
 										autoComplete="off"
-										value={formData.website}
-										onChange={handleChange}
+										{...register("website")}
 									/>
 								</div>
 
@@ -127,41 +129,39 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
                                         <input
                                             type="email"
                                             id="email"
-                                            name="email"
                                             placeholder="la-tua@email.it"
-                                            value={formData.email}
-                                            onChange={handleChange}
+                                            {...register("email")}
                                             className={`w-full rounded-2xl border bg-white/5 py-4 px-6 text-text-primary placeholder:text-text-muted outline-none focus:border-primary/50 focus:bg-white/[0.08] transition-all duration-300 ${errors.email ? "border-red-500/50" : "border-white/10"}`}
                                         />
-                                        {errors.email && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.email}</p>}
+                                        {errors.email && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.email.message}</p>}
                                     </div>
                                     <div>
                                         <label htmlFor="subject" className="block text-sm font-bold text-text-secondary mb-2 ml-1">Oggetto</label>
                                         <input
                                             type="text"
                                             id="subject"
-                                            name="subject"
                                             placeholder="Di cosa hai bisogno?"
-                                            value={formData.subject}
-                                            onChange={handleChange}
+                                            {...register("subject")}
+                                            onChange={(e) => {
+                                                setValue("subject", e.target.value)
+                                                setSubject(e.target.value)
+                                            }}
                                             className={`w-full rounded-2xl border bg-white/5 py-4 px-6 text-text-primary placeholder:text-text-muted outline-none focus:border-primary/50 focus:bg-white/[0.08] transition-all duration-300 ${errors.subject ? "border-red-500/50" : "border-white/10"}`}
                                         />
-                                        {errors.subject && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.subject}</p>}
+                                        {errors.subject && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.subject.message}</p>}
                                     </div>
                                 </div>
-                                
+
 								<div>
 									<label htmlFor="body" className="block text-sm font-bold text-text-secondary mb-2 ml-1">Messaggio</label>
 									<textarea
 										id="body"
-										name="body"
 										rows={5}
 										placeholder="Raccontaci brevemente la tua idea..."
-										value={formData.body}
-										onChange={handleChange}
+										{...register("body")}
 										className={`w-full rounded-2xl border bg-white/5 py-4 px-6 text-text-primary placeholder:text-text-muted outline-none focus:border-primary/50 focus:bg-white/[0.08] transition-all duration-300 ${errors.body ? "border-red-500/50" : "border-white/10"}`}
 									/>
-									{errors.body && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.body}</p>}
+									{errors.body && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.body.message}</p>}
 								</div>
 
 								<div className="bg-white/5 border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:bg-white/[0.08]">
@@ -169,10 +169,8 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
 										<div className="flex items-center h-5 mt-1">
 											<input
 												id="gdpr-consent"
-												name="gdpr-consent"
 												type="checkbox"
-												checked={gdprAccepted}
-												onChange={handleGdprChange}
+												{...register("gdpr")}
 												className="h-5 w-5 rounded-lg border-white/20 bg-white/5 text-primary focus:ring-primary/50 focus:ring-offset-background-dark"
 											/>
 										</div>
@@ -183,18 +181,18 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
 											</label>
 										</div>
 									</div>
-									{errors.gdpr && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.gdpr}</p>}
+									{errors.gdpr && <p className="mt-2 text-red-400 text-xs ml-1 font-medium italic">{errors.gdpr.message}</p>}
 								</div>
 
 								<div>
 									<button
 										type="submit"
 										className="relative group w-full px-8 py-5 rounded-2xl bg-primary text-white font-extrabold text-lg transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_0_30px_rgba(23,147,208,0.4)] disabled:opacity-50 disabled:hover:scale-100 overflow-hidden"
-										disabled={isLoading}
+										disabled={isSubmitting}
 									>
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
 										<span className="relative flex items-center justify-center gap-3">
-											{isLoading ? (
+											{isSubmitting ? (
                                                 <>
                                                     <Loader2 className="w-6 h-6 animate-spin" />
                                                     Invio in corso...
@@ -208,8 +206,8 @@ export default function ContactForm({ subject, setSubject }: ContactFormProps) {
 										</span>
 									</button>
 								</div>
-								{errors.form && <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-center font-bold tracking-tight">{errors.form}</div>}
-								{success && <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-center font-bold tracking-tight animate-pulse">Richiesta inviata! Ti risponderemo prestissimo.</div>}
+								{errors.root && <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-center font-bold tracking-tight">{errors.root.message}</div>}
+								{isSubmitSuccessful && !errors.root && <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-center font-bold tracking-tight animate-pulse">Richiesta inviata! Ti risponderemo prestissimo.</div>}
 							</form>
 						</div>
 					</div>
