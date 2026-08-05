@@ -2,6 +2,7 @@ import WhatsappIcon from "@/components/whatsapp-icon";
 import "./css/style.css";
 import { Inter } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -65,6 +66,10 @@ export default function RootLayout({
         <div className="flex min-h-screen flex-col overflow-hidden supports-[overflow:clip]:overflow-clip">
           {children}
         </div>
+        {/* Vercel Analytics: privacy-first, nessun cookie, incluso gratis nel
+            piano Vercel già in uso (come @vercel/speed-insights). Zero
+            configurazione aggiuntiva richiesta lato progetto. */}
+        <Analytics />
       </body>
     </html>
   );

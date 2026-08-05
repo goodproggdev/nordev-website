@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Check, Monitor, LayoutDashboard, ShoppingBag, Smartphone, ArrowRight } from "lucide-react"
 import { BackgroundBeams } from "@/components/ui/background-beams"
 import { cn } from "@/lib/utils"
@@ -55,7 +56,7 @@ export default function Pricing({ setSubject }: PricingProps) {
     return (
         <section id="listino" className="relative py-24 px-4 overflow-hidden bg-background-dark">
             <BackgroundBeams className="opacity-20" />
-            
+
             <div className="max-w-7xl mx-auto relative z-10">
                 <div className="text-center mb-20">
                     <h2 className="text-4xl md:text-6xl font-extralight tracking-tighter text-frost-white mb-6 leading-tight">
@@ -116,7 +117,15 @@ export default function Pricing({ setSubject }: PricingProps) {
                     ))}
                 </div>
 
-                <div className="mt-16 text-center">
+                <div className="mt-16 flex flex-col items-center gap-4">
+                    <Link
+                        href="/preventivo"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary text-background-dark font-bold transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(23,147,208,0.4)]"
+                    >
+                        Non sai da dove partire? Prova il Preventivatore
+                        <ArrowRight className="w-4 h-4" />
+                    </Link>
                     <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-text-secondary">
                         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                         Hai un progetto personalizzato? <button onClick={() => handleClick("CUSTOM")} className="text-text-primary font-bold hover:text-primary transition-colors">Parliamone insieme</button>

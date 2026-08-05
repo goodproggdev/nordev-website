@@ -107,7 +107,7 @@ export default function Cta() {
                 title: "Orologiaio da Sebastian",
                 description: "Sviluppo eCommerce"
             },
-            href: "https://orologiaiodasebastian.com/",
+            href: "https://www.orologiaiodasebastian.it/",
             type: "link"
         },
         {

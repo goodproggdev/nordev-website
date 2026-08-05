@@ -39,4 +39,9 @@ next-env.d.ts
 
 # contentlayer
 .contentlayer
-"_to_delete/" 
+
+# file di scarto/scratch usati da Claude per rifare build di verifica o
+# spostare file morti: mai da versionare (nota: prima questa riga aveva le
+# virgolette incluse nel pattern, quindi non ha mai funzionato ed è per
+# questo che _to_delete/ è finita nel repo più volte).
+_to_delete/

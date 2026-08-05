@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { BackgroundBeams } from "@/components/ui/background-beams"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
@@ -10,7 +11,7 @@ export default function HeroHome() {
 
    return (
       <section className="relative overflow-hidden pt-32 pb-16 md:pt-48 md:pb-32 bg-background-dark" id="home">
-         
+
          <BackgroundBeams className="opacity-30" />
 
          {/* Aurora Glow Layer */}
@@ -23,7 +24,7 @@ export default function HeroHome() {
                   <div className="relative group cursor-pointer" onClick={() => setRotated(!rotated)}>
                      {/* Light Platform (The "Floor") */}
                      <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-[280px] h-[40px] bg-primary/20 blur-[40px] rounded-[100%] opacity-40 group-hover:opacity-80 group-hover:bg-primary/40 transition-all duration-1000"></div>
-                     
+
                      {/* Subtle Ambient Backglow */}
                      <div className="absolute inset-0 bg-primary/10 blur-[80px] rounded-full"></div>
 
@@ -40,7 +41,7 @@ export default function HeroHome() {
                   </div>
                </div>
 
-               
+
                <h1
                   className="mb-8 text-6xl font-extralight tracking-tighter md:text-8xl lg:text-9xl text-frost-white leading-[1.1]"
                   data-aos="zoom-y-out"
@@ -50,36 +51,43 @@ export default function HeroHome() {
                      Nordev
                   </span>
                </h1>
-               
+
                <div className="mx-auto max-w-3xl">
                   <p
                      className="mb-12 text-lg text-arctic-mist md:text-xl font-light tracking-wide leading-relaxed"
                      data-aos="zoom-y-out"
                      data-aos-delay={300}
                   >
-                     Progettiamo le fondamenta digitali del futuro. 
+                     Progettiamo le fondamenta digitali del futuro.
                      <span className="block mt-2 text-primary font-medium opacity-80">Sviluppo Tecnico. Integrazioni. Evoluzione.</span>
                   </p>
-                  
-                  <div 
-                     className="flex flex-col sm:flex-row items-center justify-center gap-4"
+
+                  <div
+                     className="flex flex-col sm:flex-row items-center justify-center gap-4 flex-wrap"
                      data-aos="zoom-y-out"
                      data-aos-delay={450}
                   >
-                     <a
+                     <Link
                         className="group relative inline-flex items-center justify-center px-8 py-3 font-medium text-background-dark bg-primary rounded-full transition-all duration-500 hover:shadow-[0_0_40px_rgba(125,211,252,0.4)] hover:scale-105 w-full sm:w-auto overflow-hidden"
-                        href="#listino"
+                        href="/preventivo"
                      >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         <span className="relative flex items-center justify-center">
-                           Le nostre soluzioni
+                           Richiedi un preventivo
                            <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>
-                     </a>
-                     
+                     </Link>
+
                      <a
                         className="px-8 py-3 rounded-full bg-white/5 border border-white/10 text-frost-white font-medium backdrop-blur-sm transition-all duration-500 hover:bg-white/10 w-full sm:w-auto"
-                        href="#contatti" 
+                        href="#listino"
+                     >
+                        Le nostre soluzioni
+                     </a>
+
+                     <a
+                        className="px-8 py-3 rounded-full bg-white/5 border border-white/10 text-frost-white font-medium backdrop-blur-sm transition-all duration-500 hover:bg-white/10 w-full sm:w-auto"
+                        href="#contatti"
                      >
                         Parliamone
                      </a>
